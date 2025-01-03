@@ -17,9 +17,10 @@ export default function Login() {
             const response = await api.post('/auth/login', { email, senha });
             login(response.data.token);
             setMsg('Login realizado com sucesso!');
-            router.push('/usuarios')
+            router.push('/')
         } catch (err) {
             setMsg(err.response?.data?.erro || 'Errro no login!')
+            router.push('/login')
         }
     }
 

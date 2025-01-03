@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+    list-style: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar {
+    height: 50px;
+    background-color: #000000;
+    color: white;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.navbar ul {
+    display: flex;
+}
