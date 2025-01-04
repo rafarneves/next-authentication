@@ -4,9 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { redirect } from "next/navigation";
 
 export default function Usuarios() {
-    const { token, logout } = useContext(AuthContext)
-
-    if (!token) redirect('/login')
+   const { logout } = useContext(AuthContext)
 
     return (
         <>

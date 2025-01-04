@@ -12,6 +12,7 @@ export default function Navbar() {
                 <ul>
                     {token &&  (
                         <>
+                            <li><Link href="/">Início</Link></li>
                             <li>
                                 <Link href="/usuarios">Usuários</Link>
                             </li>

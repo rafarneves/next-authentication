@@ -27,10 +27,10 @@ async function cadastrarUsuario(nome, email, senha) {
 
 async function logarUsuario(email, senha) {
     const usuario = await prisma.user.findUnique({ where: { email } });
-    if (!usuario) throw new Error('Usuário não encontrado!')
+    if (!usuario) throw new Error('Usuário não encontrado.')
 
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
-    if (!senhaValida) throw new Error('Senha inválida!');
+    if (!senhaValida) throw new Error('Senha inválida.');
 
     const token = jwt.sign({ 
         id: usuario.id,

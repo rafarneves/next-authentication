@@ -1,5 +1,7 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 interface AuthContextData {
     token: string | null;
@@ -12,9 +14,10 @@ export const AuthContext = createContext<AuthContextData | undefined>(undefined)
 export function AuthProvider({ children }) {
     const [token, setToken] = useState<string | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('authToken');
+        const storedToken = Cookies.get('authToken');
         if (storedToken) {
             setToken(storedToken);
         }
@@ -24,12 +27,13 @@ export function AuthProvider({ children }) {
 
     const login = (token: string) => {
         setToken(token);
-        localStorage.setItem('authToken', token);
+        Cookies.set('authToken', token, { secure: true, sameSite: 'Strict' });
     }
 
     const logout = () => {
         setToken(null);
-        localStorage.removeItem('authToken');
+        Cookies.remove('authToken');
+        router.push('/login')
     }
 
     if (!isInitialized) {
@@ -37,6 +41,7 @@ export function AuthProvider({ children }) {
         return null;
     }
 
+    console.log(token)
     return (
         <AuthContext.Provider value={{ token, login, logout }}>
             {children}

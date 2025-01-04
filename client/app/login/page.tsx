@@ -11,40 +11,47 @@ export default function Login() {
     const { login } = useContext(AuthContext)
     const router = useRouter();
 
-    const handleLogin = async (e) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const response = await api.post('/auth/login', { email, senha });
+
+            if (!response.data.sucesso) {
+                setMsg(response.data.erro)
+                return
+            }
+
             login(response.data.token);
-            setMsg('Login realizado com sucesso!');
             router.push('/')
-        } catch (err) {
-            setMsg(err.response?.data?.erro || 'Errro no login!')
+        } catch (err: any) {
+            setMsg(err.response?.data?.erro || 'Errro no login.')
             router.push('/login')
         }
     }
 
     return (
-        <>
-            <h1>Login</h1>
-
-            <form onSubmit={handleLogin}>
-                <input 
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} 
-                />
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                />
-                <button type="submit">Login</button>
-            </form>
-
-            {msg && <p>{msg}</p>}
-        </>
+        <div className="container_wrapper">
+            <div className="form_login">
+                <form onSubmit={handleLogin}>
+                    <h1>Login</h1>
+                    <input 
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)} 
+                    />
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
+                    <button type="submit">Entrar</button>
+                </form>
+                <div className="form-feedback">
+                    <p>{msg}</p>
+                </div>
+            </div>
+        </div>
     )
 }

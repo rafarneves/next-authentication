@@ -28,20 +28,20 @@ async function login(req, res) {
 
         // Validação dos campos obrigatórios
         if (!email || !senha) {
-            return res.status(400).json({ erro: 'Email e senha são obrigatórios.' });
+            return res.status(400).json({sucesso: false, erro: 'Email e senha são obrigatórios.' });
         }
 
         // Validação do formato do email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ erro: 'O email fornecido é inválido.' });
+            return res.status(400).json({sucesso: false, erro: 'O email fornecido é inválido.' });
         }
 
         // Chamada ao serviço para autenticar o usuário
         const token = await logarUsuario(email, senha);
-        res.status(200).json(token);
+        res.status(200).json({sucesso: true, token});
     } catch (err) {
-        res.status(400).json({ erro: err.message });
+        res.status(200).json({ sucesso: false, erro: err.message });
     }
 }
 
