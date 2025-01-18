@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [msg, setMsg] = useState('');
+    const [feedback, setFeedback] = useState('');
     const { login } = useContext(AuthContext)
     const router = useRouter();
 
@@ -15,16 +15,17 @@ export default function Login() {
         e.preventDefault();
         try {
             const response = await api.post('/auth/login', { email, senha });
+            console.log(response.data)
 
-            if (!response.data.sucesso) {
-                setMsg(response.data.erro)
+            if (!response.data.token) {
+                setFeedback('Erro ao logar')
                 return
             }
-
+            
             login(response.data.token);
             router.push('/')
         } catch (err: any) {
-            setMsg(err.response?.data?.erro || 'Errro no login.')
+            setFeedback(err.response?.data?.erro || 'Errro no login.')
             router.push('/login')
         }
     }
@@ -49,7 +50,7 @@ export default function Login() {
                     <button type="submit">Entrar</button>
                 </form>
                 <div className="form-feedback">
-                    <p>{msg}</p>
+                    <p>{feedback}</p>
                 </div>
             </div>
         </div>

@@ -14,9 +14,20 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  nome      String
-  email     String    @unique
-  senha     String
-  createdAt DateTime  @default(now())
+  id            Int           @id @default(autoincrement())
+  nome          String
+  email         String        @unique
+  senha         String
+  createdAt     DateTime      @default(now())
+  sites         Site[]
+}
+
+model Site {
+  id            Int           @id @default(autoincrement())
+  nome          String
+  titulo        String
+  descricao     String
+  userId        Int
+  createdAt     DateTime      @default(now())
+  user          User          @relation(fields: [userId], references: [id])
 }

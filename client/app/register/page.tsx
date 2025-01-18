@@ -1,21 +1,30 @@
 'use client'
 import { useState } from "react";
 import api from "../../services/api";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [feedback, setFeedback] = useState('');
+    const router = useRouter();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await api.post('/users/register', { nome, email, senha });
+            await api.post('/users', { nome, email, senha });
             setFeedback('Usuário(a) cadastrado(a) com sucesso!');
         } catch (err) {
             setFeedback(err.response?.data?.erro || 'Erro no cadastro.')
         }
+
+        // userService.create({ nome, email, senha }).then(data => {
+        //     setFeedback('Usuário(a) cadastrado(a) com sucesso!');
+        //     router.push('/login')
+        // }).catch((err) => {
+        //     setFeedback(err.response?.data?.erro || 'Erro no cadastro.')
+        // })
     }
 
     return (

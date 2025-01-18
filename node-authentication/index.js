@@ -23,7 +23,7 @@ app.use(express.json())
 const PORT = 5000
 
 // Routes
-app.post('/users/register', cadastrar)
+app.post('/users', cadastrar)
 app.post('/auth/login', login)
 app.get('/users', getUsuarios)
 

@@ -1,22 +1,10 @@
 import { cadastrarUsuario, logarUsuario, usuariosCadastrados } from '../services/userService.js'
 
 async function cadastrar(req, res) {
+    const { nome, email, senha } = req.body;
+
     try {
-        const { nome, email, senha } = req.body;
-
-        // Validação de campos obrigatórios
-        if (!nome || !email || !senha) {
-            return res.status(400).json({ erro: 'Nome, email e senha são obrigatórios.' });
-        }
-
-        // Validação do formato do email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({ erro: 'O email fornecido é inválido.' });
-        }
-
-        const usuario = await cadastrarUsuario(nome, email, senha)
-        res.status(201).json(usuario)
+        return await cadastrarUsuario(nome, email, senha)
     } catch (err) {
         res.status(400).json({ erro: err.message });
     }

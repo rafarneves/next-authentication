@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import api from "../services/api";
 
 interface AuthContextData {
     token: string | null;
@@ -11,18 +12,33 @@ interface AuthContextData {
 
 export const AuthContext = createContext<AuthContextData | undefined>(undefined);
 
-export function AuthProvider({ children }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const storedToken = Cookies.get('authToken');
+
         if (storedToken) {
-            setToken(storedToken);
+            api.post('/auth/validate-token', {}, {
+                headers: { Authorization: `Bearer ${storedToken}` },
+            })
+            .then(() => {
+                setToken(storedToken);
+            })
+            .catch(() => {
+                Cookies.remove('authToken');
+                setToken(null);
+                router.push('/login')
+            }).finally(() => {
+                setIsInitialized(true);
+            });
+        } else {
+            setIsInitialized(true)
         }
 
-        setIsInitialized(true)
+        
     }, []);
 
     const login = (token: string) => {
